@@ -22,14 +22,14 @@ production things properly:
 
 ```mermaid
 flowchart LR
-    PDF[PDF file] -->|PyMuPDF4LLM| MD[Per-page Markdown]
-    MD -->|sentence-aware chunker<br/>tables atomic, page metadata| CH[Chunks]
-    CH -->|Ollama nomic-embed-text| V[Embeddings]
-    V --> DB[(Chroma<br/>persistent store)]
-    Q[Question] -->|embed| DB
-    DB -->|top-k hits + page nums| PR[Prompt w/ context]
-    PR -->|Ollama chat LLM| AN[Draft answer]
-    AN -->|validate p.N citations| OUT[Answer + verified sources]
+    PDF["PDF file"] -->|"PyMuPDF4LLM"| MD["Per-page Markdown"]
+    MD -->|"sentence-aware chunker"| CH["Chunks"]
+    CH -->|"Ollama nomic-embed-text"| V["Embeddings"]
+    V --> DB["Chroma persistent store"]
+    Q["Question"] -->|"embed"| DB
+    DB -->|"top-k hits"| PR["Prompt with context"]
+    PR -->|"Ollama chat LLM"| AN["Draft answer"]
+    AN -->|"validate citations"| OUT["Answer with verified sources"]
 ```
 
 Stack: Python 3.12+, PyMuPDF4LLM (Markdown parsing), Chroma (embedded vector store),
