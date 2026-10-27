@@ -1,0 +1,5 @@
+pymupdf4llm==1.28.2
+chromadb>=1.0
+requests>=2.32
+streamlit>=1.40
+pytest>=8.0
