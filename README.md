@@ -21,16 +21,20 @@ production things properly:
 ## Architecture
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'fontSize':'22px'}}}%%
 flowchart LR
-    PDF["PDF file"] -->|"PyMuPDF4LLM"| MD["Per-page Markdown"]
-    MD -->|"sentence-aware chunker"| CH["Chunks"]
-    CH -->|"Ollama nomic-embed-text"| V["Embeddings"]
-    V --> DB["Chroma persistent store"]
-    Q["Question"] -->|"embed"| DB
-    DB -->|"top-k hits"| PR["Prompt with context"]
-    PR -->|"Ollama chat LLM"| AN["Draft answer"]
-    AN -->|"validate citations"| OUT["Answer with verified sources"]
+    PDF["PDF file"] -->|"parse"| MD["Markdown"] -->|"chunk"| CH["Chunks"] -->|"embed"| DB[("Chroma")]
+    Q["Question"] -->|"top-k hits"| PR["Prompt"] -->|"Ollama LLM"| AN["Draft"] -->|"validate"| OUT["Answer"]
+    DB --> PR
+    Q -.->|"embed"| DB
 ```
+
+<details>
+<summary>Diagram not rendering? Open the pre-rendered version</summary>
+
+![Architecture](static/architecture.png)
+
+</details>
 
 Stack: Python 3.12+, PyMuPDF4LLM (Markdown parsing), Chroma (embedded vector store),
 Ollama (local embeddings + chat), Streamlit (UI), pytest (tests).
